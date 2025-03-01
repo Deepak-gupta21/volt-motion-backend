@@ -23,11 +23,9 @@ const cors = require('cors');
 
 
 app.use(cors({
-  origin: "https://voltmotion.netlify.app",  // ✅ Allow only your frontend
-  methods: "GET, POST, OPTIONS",
-  allowedHeaders: ["Content-Type"],
-  credentials: true,
+  origin: "*"
 }));
+
 
 
 
