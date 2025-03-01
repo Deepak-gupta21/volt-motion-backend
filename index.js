@@ -13,13 +13,23 @@ const cors = require("cors");
 
 const app = express();
 
+
+
 // Middleware
-app.use( cors({
-  origin: "*",
-  methods: "GET,POST,PUT,DELETE",
-  credentials: true, 
-}));
-app.use(express.json()); // Parse JSON data
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+const cors = require('cors');
+app.use(cors());
+
+// const corsOptions = {
+//   origin: '*', // Your React app's URL
+//   methods: ['GET', 'POST'],
+//   allowedHeaders: ['Content-Type'],
+// };
+// app.use(cors(corsOptions));
+
+
+require('dotenv').config(); 
 
 // Connect to MongoDB
 mongoose
