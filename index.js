@@ -13,20 +13,23 @@ const cors = require("cors");
 
 const app = express();
 
-
+// ✅ Handle Preflight (OPTIONS) Requests
+app.options("*", cors());
 
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const cors = require('cors');
-app.use(cors());
 
-// const corsOptions = {
-//   origin: '*', // Your React app's URL
-//   methods: ['GET', 'POST'],
-//   allowedHeaders: ['Content-Type'],
-// };
-// app.use(cors(corsOptions));
+
+app.use(cors({
+  origin: "https://voltmotion.netlify.app",  // ✅ Allow only your frontend
+  methods: "GET, POST, OPTIONS",
+  allowedHeaders: ["Content-Type"],
+  credentials: true,
+}));
+
+
 
 
 require('dotenv').config(); 
