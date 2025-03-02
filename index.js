@@ -7,23 +7,16 @@ const bodyParser = require('body-parser');
 const app = express();
 
 
-app.options("*", cors());
+app.use(cors({
+  origin: "*",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE", 
+  credentials: true,
+  optionsSuccessStatus: 204
+}));
 
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-
-
-app.use(cors({
-  origin: "*",  
-  methods: "GET, POST, OPTIONS",
-  allowedHeaders: ["Content-Type"],
-  credentials: true,
-}));
-
-
-
 
 require('dotenv').config(); 
 
