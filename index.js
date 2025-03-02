@@ -2,37 +2,38 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
 
 const app = express();
 
 
+app.options("*", cors());
 
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-const cors = require('cors');
-app.use(cors());
 
-const corsOptions = {
-  origin: '*', 
-  methods: ['POST'],
-  allowedHeaders: ['Content-Type'],
-};
-app.use(cors(corsOptions));
+
+
+app.use(cors({
+  origin: "*",  
+  methods: "GET, POST, OPTIONS",
+  allowedHeaders: ["Content-Type"],
+  credentials: true,
+}));
+
+
 
 
 require('dotenv').config(); 
 
-
-
-
+// Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log(err));
 
-
+// User Schema
 const UserSchema = new mongoose.Schema({
   name: String,
   email: String,
@@ -42,23 +43,18 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", UserSchema);
 
-
+// API Route to Post User Details
 app.post("/submit", async (req, res) => {
   try {
     const { name, email, phone, message } = req.body;
     const newUser = new User({ name, email, phone, message });
     await newUser.save();
-    
-   
-    res.set("Access-Control-Allow-Origin", "https://voltmotion.netlify.app");
-    res.set("Access-Control-Allow-Credentials", "true");
-    
     res.status(201).json({ message: "User data saved successfully!" });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-
+// Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
